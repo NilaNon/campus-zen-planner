@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { MapPin, Clock, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MapPin, Users, Clock } from 'lucide-react';
 
 interface StudySpaceCardProps {
   name: string;
@@ -13,7 +13,6 @@ interface StudySpaceCardProps {
   openUntil: string;
   occupancy: number;
   capacity: number;
-  facilities?: string[];
 }
 
 const StudySpaceCard: React.FC<StudySpaceCardProps> = ({
@@ -24,63 +23,50 @@ const StudySpaceCard: React.FC<StudySpaceCardProps> = ({
   openUntil,
   occupancy,
   capacity,
-  facilities
 }) => {
-  const occupancyPercentage = Math.round((occupancy / capacity) * 100);
-  
   return (
-    <Card className={`overflow-hidden ${!available ? 'opacity-70' : ''}`}>
-      <CardContent className="p-0">
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <div>
-              <h3 className="font-medium">{name}</h3>
-              <p className="text-sm text-muted-foreground">{location}</p>
-            </div>
-            <Badge variant={available ? "outline" : "secondary"}>
-              {available ? 'Available' : 'Full'}
-            </Badge>
+    <Card className="overflow-hidden">
+      <div className="h-32 bg-zen-gray relative">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-muted-foreground">Space Image</span>
+        </div>
+        <Badge
+          className={`absolute top-2 right-2 ${
+            available ? 'bg-green-500' : 'bg-red-500'
+          }`}
+          variant="secondary"
+        >
+          {available ? 'Available' : 'Full'}
+        </Badge>
+        <Badge
+          className="absolute top-2 left-2"
+          variant="outline"
+        >
+          {type === 'individual' ? 'Quiet Space' : 'Group Space'}
+        </Badge>
+      </div>
+      <CardHeader className="py-3">
+        <CardTitle className="text-lg">{name}</CardTitle>
+      </CardHeader>
+      <CardContent className="pb-4 pt-0">
+        <div className="space-y-2 text-sm">
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <span>{location}</span>
           </div>
-          
-          <div className="flex items-center gap-2 text-sm mt-3">
+          <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-muted-foreground" />
             <span>Open until {openUntil}</span>
           </div>
-          
-          <div className="flex items-center gap-2 text-sm mt-1">
+          <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-muted-foreground" />
-            <span>{occupancy}/{capacity} spaces ({occupancyPercentage}% full)</span>
+            <span>
+              {occupancy}/{capacity} occupied
+            </span>
           </div>
-          
-          <div className="flex items-center gap-2 text-sm mt-1">
-            <MapPin className="h-4 w-4 text-muted-foreground" />
-            <span>{type === 'individual' ? 'Individual Study' : 'Group Study'}</span>
+          <div className="mt-4 pt-3 border-t flex justify-end">
+            <Button size="sm">Check In</Button>
           </div>
-          
-          {facilities && facilities.length > 0 && (
-            <div className="mt-3">
-              <div className="flex flex-wrap gap-1">
-                {facilities.map((facility, index) => (
-                  <Badge key={index} variant="secondary" className="text-xs font-normal">
-                    {facility}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          <div className="mt-4">
-            <Button disabled={!available} className="w-full">
-              {available ? 'Reserve Space' : 'Join Waitlist'}
-            </Button>
-          </div>
-        </div>
-        
-        <div className="h-2 bg-muted">
-          <div 
-            className={`h-full ${occupancyPercentage >= 90 ? 'bg-destructive' : 'bg-primary'}`}
-            style={{ width: `${occupancyPercentage}%` }}
-          ></div>
         </div>
       </CardContent>
     </Card>

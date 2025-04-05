@@ -1,240 +1,294 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Map, BookOpen, Globe, Video, FileText, Users, Lightbulb, ExternalLink, Clock } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BookOpen, Heart, Brain, Clock, Users, Download, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+
+const academicResources = [
+  {
+    title: "Research Paper Writing Guide",
+    description: "A comprehensive guide to writing effective research papers",
+    type: "PDF",
+    size: "1.2 MB",
+    downloads: 256
+  },
+  {
+    title: "Database Design Principles",
+    description: "Learn the fundamentals of database normalization and schema design",
+    type: "PDF",
+    size: "895 KB",
+    downloads: 189
+  },
+  {
+    title: "Literature Review Template",
+    description: "Structure and format your literature reviews effectively",
+    type: "DOCX",
+    size: "420 KB",
+    downloads: 312
+  },
+  {
+    title: "Statistical Analysis Methods",
+    description: "Overview of common statistical methods for research",
+    type: "PDF",
+    size: "1.8 MB",
+    downloads: 145
+  }
+];
+
+const wellnessResources = [
+  {
+    title: "Stress Management Techniques",
+    description: "Science-backed strategies to manage academic stress",
+    category: "Mental Health",
+    externalLink: true
+  },
+  {
+    title: "Mindfulness for Students",
+    description: "Quick mindfulness exercises for busy student schedules",
+    category: "Mindfulness",
+    externalLink: false
+  },
+  {
+    title: "Healthy Sleep Habits",
+    description: "Tips for improving sleep quality during exam periods",
+    category: "Physical Health",
+    externalLink: true
+  },
+  {
+    title: "Time Management Workbook",
+    description: "Interactive worksheets to improve productivity",
+    category: "Productivity",
+    externalLink: false
+  }
+];
+
+const communityResources = [
+  {
+    title: "Peer Tutoring Program",
+    description: "Connect with senior students for academic support",
+    schedule: "Mon-Fri, 10:00-16:00",
+    location: "Library Learning Commons"
+  },
+  {
+    title: "Student Counseling Services",
+    description: "Free and confidential counseling for all students",
+    schedule: "Mon-Thu, 09:00-17:00",
+    location: "Student Wellness Center, Room 105"
+  },
+  {
+    title: "Academic Skills Workshops",
+    description: "Weekly workshops on research, writing, and presentation skills",
+    schedule: "Tuesdays, 14:00-16:00",
+    location: "Humanities Building, Room 203"
+  }
+];
 
 const Resources = () => {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Academic Resources</h1>
+      <h1 className="text-2xl font-semibold">Academic & Wellness Resources</h1>
       
-      <Tabs defaultValue="all">
-        <TabsList className="mb-4">
-          <TabsTrigger value="all">All Resources</TabsTrigger>
-          <TabsTrigger value="library">Library</TabsTrigger>
-          <TabsTrigger value="online">Online</TabsTrigger>
-          <TabsTrigger value="tutoring">Tutoring</TabsTrigger>
+      <Tabs defaultValue="academic" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="academic" className="flex items-center gap-2">
+            <BookOpen className="h-4 w-4" />
+            <span>Academic</span>
+          </TabsTrigger>
+          <TabsTrigger value="wellness" className="flex items-center gap-2">
+            <Heart className="h-4 w-4" />
+            <span>Wellness</span>
+          </TabsTrigger>
+          <TabsTrigger value="community" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            <span>Community</span>
+          </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="all" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <ResourceCard 
-              title="Library Services"
-              description="Access e-books, research databases, and academic journals."
-              location="Main Library Building"
-              icon={<BookOpen className="h-5 w-5" />}
-              category="library"
-            />
-            
-            <ResourceCard 
-              title="Online Databases"
-              description="JSTOR, IEEE, and other research databases for academic papers."
-              icon={<Globe className="h-5 w-5" />}
-              category="online"
-              link="https://library.university.edu/databases"
-            />
-            
-            <ResourceCard 
-              title="Video Tutorials"
-              description="Access to LinkedIn Learning and other educational video platforms."
-              icon={<Video className="h-5 w-5" />}
-              category="online"
-              link="https://university.edu/video-resources"
-            />
-            
-            <ResourceCard 
-              title="Writing Center"
-              description="Get help with essays, research papers, and other written assignments."
-              location="Humanities Building, Room 203"
-              icon={<FileText className="h-5 w-5" />}
-              category="tutoring"
-              hours="Mon-Fri: 9:00-17:00"
-            />
-            
-            <ResourceCard 
-              title="Peer Tutoring"
-              description="Free peer tutoring services for most undergraduate courses."
-              location="Student Center, 2nd Floor"
-              icon={<Users className="h-5 w-5" />}
-              category="tutoring"
-              hours="Mon-Thu: 10:00-18:00, Fri: 10:00-15:00"
-            />
-            
-            <ResourceCard 
-              title="Academic Success Center"
-              description="Workshops on study skills, time management, and academic planning."
-              location="Administration Building, Room 105"
-              icon={<Lightbulb className="h-5 w-5" />}
-              category="tutoring"
-              hours="Mon-Fri: 8:30-16:30"
-            />
-          </div>
+        <TabsContent value="academic" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-zen-blue" />
+                <span>Academic Resources</span>
+              </CardTitle>
+              <CardDescription>
+                Study guides, templates, and research materials to support your academic journey
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {academicResources.map((resource, index) => (
+                  <div key={index} className="p-4 border rounded-lg">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-medium">{resource.title}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
+                      </div>
+                      <Badge variant="outline">{resource.type}</Badge>
+                    </div>
+                    <div className="flex justify-between items-center mt-4 pt-2 border-t text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4">
+                        <span>Size: {resource.size}</span>
+                        <span>{resource.downloads} downloads</span>
+                      </div>
+                      <Button size="sm" className="flex items-center gap-2">
+                        <Download className="h-4 w-4" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
         
-        <TabsContent value="library" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <ResourceCard 
-              title="Library Services"
-              description="Access e-books, research databases, and academic journals."
-              location="Main Library Building"
-              icon={<BookOpen className="h-5 w-5" />}
-              category="library"
-            />
-            
-            <ResourceCard 
-              title="Special Collections"
-              description="Rare books, manuscripts, and university archives."
-              location="Main Library Building, 3rd Floor"
-              icon={<BookOpen className="h-5 w-5" />}
-              category="library"
-              hours="Mon-Fri: 10:00-16:00"
-            />
-            
-            <ResourceCard 
-              title="Media Center"
-              description="Borrow cameras, recording equipment, and use editing software."
-              location="Media Library, Ground Floor"
-              icon={<Video className="h-5 w-5" />}
-              category="library"
-              hours="Mon-Sat: 9:00-20:00"
-            />
-          </div>
+        <TabsContent value="wellness" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Heart className="h-5 w-5 text-red-500" />
+                <span>Wellness Resources</span>
+              </CardTitle>
+              <CardDescription>
+                Tools and guides to help maintain your mental and physical wellbeing
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {wellnessResources.map((resource, index) => (
+                  <div key={index} className="p-4 border rounded-lg">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-medium">{resource.title}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
+                      </div>
+                      <Badge variant="secondary" className="bg-zen-purple/20 text-zen-purple">
+                        {resource.category}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-end mt-4 pt-2 border-t">
+                      <Button size="sm" variant="outline" className="flex items-center gap-2">
+                        {resource.externalLink ? (
+                          <>
+                            <ExternalLink className="h-4 w-4" />
+                            Visit Resource
+                          </>
+                        ) : (
+                          <>
+                            <Download className="h-4 w-4" />
+                            Download
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-5 w-5 text-zen-green" />
+                <span>Quick Wellness Tips</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h3 className="font-medium mb-2">Study Break Technique</h3>
+                    <p className="text-sm">Try the Pomodoro Technique: 25 minutes of focused study followed by a 5-minute break. After 4 cycles, take a longer 15-30 minute break.</p>
+                  </div>
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h3 className="font-medium mb-2">Mindful Breathing</h3>
+                    <p className="text-sm">When feeling stressed, practice 4-7-8 breathing: Inhale for 4 seconds, hold for 7 seconds, and exhale for 8 seconds. Repeat 3-4 times.</p>
+                  </div>
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h3 className="font-medium mb-2">Hydration Reminder</h3>
+                    <p className="text-sm">Keep a water bottle at your study space and aim to drink at least 8 glasses of water throughout the day to maintain focus and energy.</p>
+                  </div>
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h3 className="font-medium mb-2">Digital Detox</h3>
+                    <p className="text-sm">Set aside 30-60 minutes before bedtime as screen-free time to improve sleep quality and reduce digital eye strain.</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
         
-        <TabsContent value="online" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <ResourceCard 
-              title="Online Databases"
-              description="JSTOR, IEEE, and other research databases for academic papers."
-              icon={<Globe className="h-5 w-5" />}
-              category="online"
-              link="https://library.university.edu/databases"
-            />
-            
-            <ResourceCard 
-              title="Video Tutorials"
-              description="Access to LinkedIn Learning and other educational video platforms."
-              icon={<Video className="h-5 w-5" />}
-              category="online"
-              link="https://university.edu/video-resources"
-            />
-            
-            <ResourceCard 
-              title="E-Book Collection"
-              description="Thousands of academic e-books available for online reading."
-              icon={<BookOpen className="h-5 w-5" />}
-              category="online"
-              link="https://library.university.edu/ebooks"
-            />
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="tutoring" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <ResourceCard 
-              title="Writing Center"
-              description="Get help with essays, research papers, and other written assignments."
-              location="Humanities Building, Room 203"
-              icon={<FileText className="h-5 w-5" />}
-              category="tutoring"
-              hours="Mon-Fri: 9:00-17:00"
-            />
-            
-            <ResourceCard 
-              title="Peer Tutoring"
-              description="Free peer tutoring services for most undergraduate courses."
-              location="Student Center, 2nd Floor"
-              icon={<Users className="h-5 w-5" />}
-              category="tutoring"
-              hours="Mon-Thu: 10:00-18:00, Fri: 10:00-15:00"
-            />
-            
-            <ResourceCard 
-              title="Academic Success Center"
-              description="Workshops on study skills, time management, and academic planning."
-              location="Administration Building, Room 105"
-              icon={<Lightbulb className="h-5 w-5" />}
-              category="tutoring"
-              hours="Mon-Fri: 8:30-16:30"
-            />
-          </div>
+        <TabsContent value="community" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-zen-blue" />
+                <span>Campus Support Services</span>
+              </CardTitle>
+              <CardDescription>
+                Available campus resources and support services
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {communityResources.map((resource, index) => (
+                  <div key={index} className="p-4 border rounded-lg">
+                    <h3 className="font-medium">{resource.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-1 mb-3">{resource.description}</p>
+                    <Separator />
+                    <div className="mt-3 pt-2 space-y-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <span>{resource.schedule}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span>{resource.location}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Emergency Contacts</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <h3 className="font-medium text-red-700">Campus Security</h3>
+                  <p className="text-sm text-red-600 mt-1">For emergencies on campus</p>
+                  <p className="text-lg font-bold text-red-700 mt-2">+27 555-1000</p>
+                  <p className="text-sm text-red-600 mt-1">Available 24/7</p>
+                </div>
+                
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h3 className="font-medium text-blue-700">Student Counseling Hotline</h3>
+                  <p className="text-sm text-blue-600 mt-1">For mental health support and counseling</p>
+                  <p className="text-lg font-bold text-blue-700 mt-2">+27 555-2000</p>
+                  <p className="text-sm text-blue-600 mt-1">Available 08:00-20:00 weekdays</p>
+                </div>
+                
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h3 className="font-medium text-green-700">Health Center</h3>
+                  <p className="text-sm text-green-600 mt-1">For health concerns and medical assistance</p>
+                  <p className="text-lg font-bold text-green-700 mt-2">+27 555-3000</p>
+                  <p className="text-sm text-green-600 mt-1">Available 08:00-18:00 weekdays</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
-  );
-};
-
-interface ResourceCardProps {
-  title: string;
-  description: string;
-  location?: string;
-  icon: React.ReactNode;
-  category: 'library' | 'online' | 'tutoring';
-  hours?: string;
-  link?: string;
-}
-
-const ResourceCard: React.FC<ResourceCardProps> = ({
-  title,
-  description,
-  location,
-  icon,
-  category,
-  hours,
-  link
-}) => {
-  return (
-    <Card>
-      <CardHeader className="pb-2 flex flex-row items-start justify-between">
-        <div className="flex items-center">
-          <div className={`mr-3 p-2 rounded-full 
-            ${category === 'library' ? 'bg-primary/10 text-primary' : 
-              category === 'online' ? 'bg-secondary/10 text-secondary' : 
-              'bg-accent/10 text-accent'}`}>
-            {icon}
-          </div>
-          <CardTitle className="text-lg">{title}</CardTitle>
-        </div>
-        <Badge variant="outline">{category}</Badge>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground mb-4">
-          {description}
-        </p>
-        
-        {location && (
-          <div className="flex items-center text-sm text-muted-foreground mb-1">
-            <Map className="h-4 w-4 mr-1" />
-            <span>{location}</span>
-          </div>
-        )}
-        
-        {hours && (
-          <div className="flex items-center text-sm text-muted-foreground mb-1">
-            <Clock className="h-4 w-4 mr-1" />
-            <span>{hours}</span>
-          </div>
-        )}
-        
-        {link && (
-          <Button variant="outline" size="sm" className="mt-3 w-full" asChild>
-            <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
-              <ExternalLink className="h-4 w-4 mr-1" />
-              Access Resource
-            </a>
-          </Button>
-        )}
-        
-        {!link && (
-          <Button variant="outline" size="sm" className="mt-3 w-full">
-            Learn More
-          </Button>
-        )}
-      </CardContent>
-    </Card>
   );
 };
 
