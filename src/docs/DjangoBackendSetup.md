@@ -1,307 +1,256 @@
 
-# Django Backend Setup for Campus Zen Planner
+# Django Backend Setup Guide
 
-This document provides instructions for setting up the Django backend for the Campus Zen Planner application with MySQL database integration.
+This guide explains how to set up the Django backend for the Campus Zen Planner application.
 
 ## Prerequisites
 
 - Python 3.8 or higher
 - pip (Python package manager)
-- MySQL Server
-- MySQL Workbench (for database management)
+- virtualenv (recommended)
 
-## Step 1: Set Up Python Environment
+## Setting Up the Project
 
-```bash
-# Create a virtual environment
-python -m venv venv
+1. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-# Activate the virtual environment
-# On Windows
-venv\Scripts\activate
-# On macOS/Linux
-source venv/bin/activate
+2. Install Django and other dependencies:
+   ```bash
+   pip install django djangorestframework django-cors-headers
+   ```
 
-# Install required packages
-pip install django djangorestframework django-cors-headers mysqlclient python-dotenv
-```
+3. Create a new Django project:
+   ```bash
+   django-admin startproject campus_zen_backend
+   cd campus_zen_backend
+   ```
 
-## Step 2: Create Django Project
+4. Create the main application:
+   ```bash
+   python manage.py startapp planner
+   ```
 
-```bash
-# Create a new Django project
-django-admin startproject campus_zen_backend
+## Database Configuration
 
-# Navigate to project directory
-cd campus_zen_backend
+1. Configure the database in `settings.py`:
+   ```python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.sqlite3',
+           'NAME': BASE_DIR / 'db.sqlite3',
+       }
+   }
+   ```
 
-# Create apps for different features
-python manage.py startapp resources
-python manage.py startapp study_spaces
-python manage.py startapp study_groups
-python manage.py startapp planner
-python manage.py startapp users
-```
+2. For production, consider using PostgreSQL:
+   ```python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'campus_zen_db',
+           'USER': 'username',
+           'PASSWORD': 'password',
+           'HOST': 'localhost',
+           'PORT': '5432',
+       }
+   }
+   ```
 
-## Step 3: Configure MySQL Database
+## Setting Up CORS
 
-1. Create a new MySQL database using MySQL Workbench:
-   - Name: campus_zen_db
-   - Character Set: utf8mb4
-   - Collation: utf8mb4_unicode_ci
+1. Add CORS configuration to `settings.py`:
+   ```python
+   INSTALLED_APPS = [
+       # ... other apps
+       'corsheaders',
+       'rest_framework',
+       'planner',
+   ]
 
-2. Configure Django to use MySQL in `settings.py`:
+   MIDDLEWARE = [
+       'corsheaders.middleware.CorsMiddleware',
+       # ... other middleware
+   ]
 
-```python
-# settings.py
-import os
-from dotenv import load_dotenv
+   CORS_ALLOWED_ORIGINS = [
+       "http://localhost:3000",
+       "http://localhost:5173",
+   ]
+   ```
 
-# Load environment variables
-load_dotenv()
+## Creating Models
 
-# Database configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'campus_zen_db'),
-        'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '3306'),
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
-    }
-}
-```
-
-3. Create a `.env` file in your project root:
-
-```
-DB_NAME=campus_zen_db
-DB_USER=your_mysql_username
-DB_PASSWORD=your_mysql_password
-DB_HOST=localhost
-DB_PORT=3306
-SECRET_KEY=your-secret-key
-DEBUG=True
-```
-
-## Step 4: Configure Django Settings
-
-Update `settings.py` with the following configurations:
+Here are some example models for the Campus Zen Planner:
 
 ```python
-# Add installed apps
-INSTALLED_APPS = [
-    # Django built-in apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
-    # Third-party apps
-    'rest_framework',
-    'corsheaders',
-    
-    # Project apps
-    'resources',
-    'study_spaces',
-    'study_groups',
-    'planner',
-    'users',
-]
-
-# Add CORS middleware
-MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    # ... other middleware
-]
-
-# CORS settings (for development)
-CORS_ALLOW_ALL_ORIGINS = True  # In production, specify exact origins
-
-# REST Framework settings
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-}
-```
-
-## Step 5: Create Models
-
-Example model for the `resources` app (`resources/models.py`):
-
-```python
+# planner/models.py
 from django.db import models
+from django.contrib.auth.models import User
 
-class ResourceCategory(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
+class StudySpace(models.Model):
+    name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
+    type = models.CharField(max_length=50, choices=[
+        ('individual', 'Individual'), 
+        ('group', 'Group')
+    ])
+    capacity = models.IntegerField()
+    occupancy = models.IntegerField(default=0)
+    open_until = models.TimeField()
     
-    def __str__(self):
-        return self.name
+    def is_available(self):
+        return self.occupancy < self.capacity
 
 class Resource(models.Model):
-    RESOURCE_TYPES = (
-        ('PDF', 'PDF Document'),
-        ('DOCX', 'Word Document'),
-        ('URL', 'External URL'),
-    )
+    title = models.CharField(max_length=255)
+    type = models.CharField(max_length=50, choices=[
+        ('document', 'Document'),
+        ('link', 'Link'),
+        ('event', 'Event'),
+    ])
+    category = models.CharField(max_length=50, choices=[
+        ('academic', 'Academic'),
+        ('wellness', 'Wellness'),
+        ('community', 'Community'),
+    ])
+    location = models.CharField(max_length=255)
+    file = models.FileField(upload_to='resources/', null=True, blank=True)
+    url = models.URLField(null=True, blank=True)
+
+class Event(models.Model):
+    title = models.CharField(max_length=255)
+    type = models.CharField(max_length=50, choices=[
+        ('group', 'Group'),
+        ('deadline', 'Deadline'),
+        ('personal', 'Personal'),
+    ])
+    date = models.DateField()
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    course = models.CharField(max_length=100, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
     
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    category = models.ForeignKey(ResourceCategory, on_delete=models.CASCADE, related_name='resources')
-    resource_type = models.CharField(max_length=10, choices=RESOURCE_TYPES)
-    file = models.FileField(upload_to='resources/', blank=True, null=True)
-    external_url = models.URLField(blank=True, null=True)
-    size = models.CharField(max_length=50, blank=True)
-    downloads = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    def __str__(self):
-        return self.title
+class WellnessCheck(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wellness_checks')
+    stress_level = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    timestamp = models.DateTimeField(auto_now_add=True)
 ```
 
-Create similar models for other apps (study_spaces, study_groups, planner, users).
+## Creating API Views
 
-## Step 6: Create API Views and Serializers
-
-Example for `resources` app:
-
-1. Create serializers (`resources/serializers.py`):
+Here's an example of API views for the application:
 
 ```python
-from rest_framework import serializers
-from .models import ResourceCategory, Resource
-
-class ResourceCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ResourceCategory
-        fields = '__all__'
-
-class ResourceSerializer(serializers.ModelSerializer):
-    category_name = serializers.ReadOnlyField(source='category.name')
-    
-    class Meta:
-        model = Resource
-        fields = '__all__'
-```
-
-2. Create views (`resources/views.py`):
-
-```python
-from rest_framework import viewsets
-from rest_framework.decorators import action
+# planner/views.py
+from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
-from .models import ResourceCategory, Resource
-from .serializers import ResourceCategorySerializer, ResourceSerializer
+from rest_framework.decorators import action
+from .models import StudySpace, Resource, Event, WellnessCheck
+from .serializers import StudySpaceSerializer, ResourceSerializer, EventSerializer, WellnessCheckSerializer
 
-class ResourceViewSet(viewsets.ModelViewSet):
+class StudySpaceViewSet(viewsets.ModelViewSet):
+    queryset = StudySpace.objects.all()
+    serializer_class = StudySpaceSerializer
+    
+    @action(detail=True, methods=['post'])
+    def check_in(self, request, pk=None):
+        study_space = self.get_object()
+        if study_space.is_available():
+            study_space.occupancy += 1
+            study_space.save()
+            return Response({'status': 'checked in'})
+        return Response({'error': 'Space is full'}, status=status.HTTP_400_BAD_REQUEST)
+
+class ResourceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
     
-    @action(detail=False, methods=['get'])
-    def academic(self, request):
-        academic_resources = Resource.objects.filter(category__name='Academic')
-        serializer = self.get_serializer(academic_resources, many=True)
-        return Response(serializer.data)
-    
-    @action(detail=False, methods=['get'])
-    def wellness(self, request):
-        wellness_resources = Resource.objects.filter(category__name='Wellness')
-        serializer = self.get_serializer(wellness_resources, many=True)
-        return Response(serializer.data)
-    
-    @action(detail=False, methods=['get'])
-    def community(self, request):
-        community_resources = Resource.objects.filter(category__name='Community')
-        serializer = self.get_serializer(community_resources, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        category = self.request.query_params.get('category')
+        if category:
+            return Resource.objects.filter(category=category)
+        return Resource.objects.all()
     
     @action(detail=True, methods=['get'])
     def download(self, request, pk=None):
         resource = self.get_object()
-        resource.downloads += 1
-        resource.save()
-        return Response({'status': 'download counted'})
+        # Logic to handle downloads
+        return Response({'status': 'download initiated'})
+
+class EventViewSet(viewsets.ModelViewSet):
+    serializer_class = EventSerializer
+    
+    def get_queryset(self):
+        return Event.objects.filter(user=self.request.user)
+
+class WellnessCheckCreate(generics.CreateAPIView):
+    serializer_class = WellnessCheckSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 ```
 
-## Step 7: Configure URLs
+## Setting Up URLs
 
-1. Create app URLs (`resources/urls.py`):
+Configure your URLs to expose the API endpoints:
 
 ```python
+# planner/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ResourceViewSet
+from .views import StudySpaceViewSet, ResourceViewSet, EventViewSet, WellnessCheckCreate
 
 router = DefaultRouter()
+router.register(r'study-spaces', StudySpaceViewSet)
 router.register(r'resources', ResourceViewSet)
+router.register(r'events', EventViewSet, basename='event')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('users/wellness-check/', WellnessCheckCreate.as_view(), name='wellness-check'),
 ]
-```
 
-2. Include app URLs in main `urls.py`:
-
-```python
+# campus_zen_backend/urls.py
 from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('resources.urls')),
-    path('api/', include('study_spaces.urls')),
-    path('api/', include('study_groups.urls')),
     path('api/', include('planner.urls')),
-    path('api/', include('users.urls')),
 ]
 ```
 
-## Step 8: Run Migrations and Create Admin User
+## Running Migrations
+
+Run the following commands to apply the database migrations:
 
 ```bash
-# Create and apply migrations
 python manage.py makemigrations
 python manage.py migrate
+```
 
-# Create admin user
+## Creating a Superuser
+
+Create an admin user to manage the application:
+
+```bash
 python manage.py createsuperuser
+```
 
-# Run development server
+## Running the Server
+
+Start the Django development server:
+
+```bash
 python manage.py runserver
 ```
 
-## Step 9: Test API Endpoints
+The API should now be accessible at http://localhost:8000/api/
 
-Use tools like Postman or curl to test your API endpoints:
+## Connecting with the Frontend
 
-```bash
-# Example: Get all resources
-curl http://localhost:8000/api/resources/
-
-# Example: Get academic resources
-curl http://localhost:8000/api/resources/academic/
-```
-
-## Step 10: Connect React Frontend
-
-Make sure your React frontend is configured to connect to the Django backend using the API endpoints.
-
-## Additional Resources
-
-- [Django Documentation](https://docs.djangoproject.com/)
-- [Django REST Framework Documentation](https://www.django-rest-framework.org/)
-- [MySQL Documentation](https://dev.mysql.com/doc/)
+The frontend React application is configured to connect to this Django backend through the API service. Make sure CORS is properly configured to allow the frontend to communicate with the backend.

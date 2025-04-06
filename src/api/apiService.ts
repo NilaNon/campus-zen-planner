@@ -1,66 +1,209 @@
 
-import axios from 'axios';
+// API service for making API calls to the backend
 
-// Base URL for the Django backend
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-
-// Create axios instance with common configuration
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Intercept requests to add authentication token
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// API service functions for resources
-export const resourcesApi = {
-  getAcademicResources: () => apiClient.get('/resources/academic/'),
-  getWellnessResources: () => apiClient.get('/resources/wellness/'),
-  getCommunityResources: () => apiClient.get('/resources/community/'),
-  downloadResource: (resourceId: string) => apiClient.get(`/resources/${resourceId}/download/`),
-};
-
-// API service functions for study spaces
+// Study Spaces API
 export const studySpacesApi = {
-  getAllSpaces: () => apiClient.get('/study-spaces/'),
-  getSpaceById: (id: string) => apiClient.get(`/study-spaces/${id}/`),
-  checkInToSpace: (id: string) => apiClient.post(`/study-spaces/${id}/check-in/`),
+  getAllSpaces: async () => {
+    // Mock data for now
+    return [
+      {
+        id: '1',
+        name: 'Library Quiet Zone',
+        location: 'Main Library, 2nd Floor',
+        available: true,
+        type: 'individual',
+        openUntil: '20:00',
+        occupancy: 12,
+        capacity: 30,
+      },
+      {
+        id: '2',
+        name: 'Humanities Study Room',
+        location: 'Humanities Building, Room 105',
+        available: true,
+        type: 'group',
+        openUntil: '18:00',
+        occupancy: 3,
+        capacity: 8,
+      },
+      {
+        id: '3',
+        name: 'Science Center Lab',
+        location: 'Science Center, Room 203',
+        available: false,
+        type: 'individual',
+        openUntil: '22:00',
+        occupancy: 25,
+        capacity: 25,
+      },
+    ];
+  },
+  
+  getSpaceById: async (id: string) => {
+    // Mock implementation
+    const spaces = await studySpacesApi.getAllSpaces();
+    return spaces.find(space => space.id === id);
+  },
+  
+  checkInToSpace: async (spaceId: string, userId: string) => {
+    // Mock implementation
+    console.log(`User ${userId} checked in to space ${spaceId}`);
+    return { success: true };
+  },
 };
 
-// API service functions for study groups
-export const studyGroupsApi = {
-  getAllGroups: () => apiClient.get('/study-groups/'),
-  getGroupById: (id: string) => apiClient.get(`/study-groups/${id}/`),
-  createGroup: (data: any) => apiClient.post('/study-groups/', data),
-  joinGroup: (id: string) => apiClient.post(`/study-groups/${id}/join/`),
-};
-
-// API service functions for user data
+// User API
 export const userApi = {
-  getCurrentUser: () => apiClient.get('/users/me/'),
-  updateProfile: (data: any) => apiClient.patch('/users/me/', data),
-  getUpcomingEvents: () => apiClient.get('/users/me/events/'),
-  recordWellnessCheck: (data: any) => apiClient.post('/users/me/wellness-check/', data),
+  getCurrentUser: async () => {
+    // Mock data
+    return {
+      id: '1',
+      name: 'Tshegofatso',
+      email: 'tshego@example.com',
+      major: 'Computer Science',
+      year: 3,
+    };
+  },
+  
+  getUpcomingEvents: async () => {
+    // Mock data
+    return [
+      {
+        id: '1',
+        title: 'Database Study Group',
+        type: 'group',
+        date: 'Today',
+        time: '15:00 - 17:00',
+        location: 'Library Study Room 2',
+        participants: 4
+      },
+      {
+        id: '2',
+        title: 'Essay Deadline: Literature Review',
+        type: 'deadline',
+        date: 'Tomorrow',
+        time: '23:59',
+        course: 'ENG201'
+      },
+      {
+        id: '3',
+        title: 'Mathematics Revision',
+        type: 'personal',
+        date: 'Wed, 8 Apr',
+        time: '14:00 - 16:00',
+        location: 'Humanities Quiet Room'
+      }
+    ];
+  },
+  
+  updateProfile: async (profileData: any) => {
+    // Mock implementation
+    console.log('Profile updated:', profileData);
+    return { success: true, user: { ...profileData, id: '1' } };
+  },
+  
+  recordWellnessCheck: async (wellnessData: any) => {
+    // Mock implementation
+    console.log('Wellness check recorded:', wellnessData);
+    return { success: true };
+  },
 };
 
-// API service functions for planner
-export const plannerApi = {
-  getTasks: () => apiClient.get('/planner/tasks/'),
-  createTask: (data: any) => apiClient.post('/planner/tasks/', data),
-  updateTask: (id: string, data: any) => apiClient.patch(`/planner/tasks/${id}/`, data),
-  deleteTask: (id: string) => apiClient.delete(`/planner/tasks/${id}/`),
+// Resources API
+export const resourcesApi = {
+  getAcademicResources: async () => {
+    // Mock data
+    return [
+      {
+        id: '1',
+        title: 'Research Paper Guide',
+        type: 'document',
+        category: 'academic',
+        downloadUrl: '#',
+        location: 'Online Library'
+      },
+      {
+        id: '2',
+        title: 'Statistics Formula Sheet',
+        type: 'document',
+        category: 'academic',
+        downloadUrl: '#',
+        location: 'Math Department'
+      },
+      {
+        id: '3',
+        title: 'Programming Tutorials',
+        type: 'video',
+        category: 'academic',
+        downloadUrl: '#',
+        location: 'Computer Science Lab'
+      },
+    ];
+  },
+  
+  getWellnessResources: async () => {
+    // Mock data
+    return [
+      {
+        id: '4',
+        title: 'Stress Management Guide',
+        type: 'document',
+        category: 'wellness',
+        downloadUrl: '#',
+        location: 'Student Health Center'
+      },
+      {
+        id: '5',
+        title: 'Meditation Sessions',
+        type: 'event',
+        category: 'wellness',
+        downloadUrl: '#',
+        location: 'Wellness Center'
+      },
+      {
+        id: '6',
+        title: 'Mental Health Resources',
+        type: 'link',
+        category: 'wellness',
+        downloadUrl: '#',
+        location: 'Student Services'
+      },
+    ];
+  },
+  
+  getCommunityResources: async () => {
+    // Mock data
+    return [
+      {
+        id: '7',
+        title: 'Campus Club Directory',
+        type: 'document',
+        category: 'community',
+        downloadUrl: '#',
+        location: 'Student Union'
+      },
+      {
+        id: '8',
+        title: 'Community Service Opportunities',
+        type: 'link',
+        category: 'community',
+        downloadUrl: '#',
+        location: 'Community Outreach Center'
+      },
+      {
+        id: '9',
+        title: 'Peer Mentoring Program',
+        type: 'event',
+        category: 'community',
+        downloadUrl: '#',
+        location: 'Student Success Center'
+      },
+    ];
+  },
+  
+  downloadResource: async (resourceId: string) => {
+    // Mock implementation
+    console.log(`Resource ${resourceId} downloaded`);
+    return { success: true };
+  },
 };
-
-export default apiClient;

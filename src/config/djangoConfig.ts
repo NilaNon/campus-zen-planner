@@ -1,70 +1,23 @@
 
-/**
- * Configuration for Django backend connection
- */
+// Configuration for Django backend API
 
-// API URL configuration
-const API_CONFIG = {
-  // Base URL for the Django backend API
-  API_URL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
-  
-  // Timeout for API requests in milliseconds
-  TIMEOUT: 10000,
-  
-  // Authentication endpoints
-  AUTH: {
-    LOGIN: '/auth/login/',
-    REGISTER: '/auth/register/',
-    REFRESH_TOKEN: '/auth/token/refresh/',
-    FORGOT_PASSWORD: '/auth/password-reset/',
-    RESET_PASSWORD: '/auth/password-reset/confirm/',
-    VERIFY_EMAIL: '/auth/verify-email/',
-  },
-  
-  // Resource endpoints
-  RESOURCES: {
-    BASE: '/resources/',
-    ACADEMIC: '/resources/academic/',
-    WELLNESS: '/resources/wellness/',
-    COMMUNITY: '/resources/community/',
-  },
-  
+export const API_BASE_URL = 'http://localhost:8000/api';
+
+export const API_ENDPOINTS = {
   // Study spaces endpoints
-  STUDY_SPACES: {
-    BASE: '/study-spaces/',
-    CHECK_IN: '/study-spaces/{id}/check-in/',
-    AVAILABILITY: '/study-spaces/availability/',
-  },
-  
-  // Study groups endpoints
-  STUDY_GROUPS: {
-    BASE: '/study-groups/',
-    JOIN: '/study-groups/{id}/join/',
-    LEAVE: '/study-groups/{id}/leave/',
-    MEMBERS: '/study-groups/{id}/members/',
-  },
+  STUDY_SPACES: `${API_BASE_URL}/study-spaces/`,
+  STUDY_SPACE_BY_ID: (id: string) => `${API_BASE_URL}/study-spaces/${id}/`,
+  STUDY_SPACE_CHECK_IN: (id: string) => `${API_BASE_URL}/study-spaces/${id}/check-in/`,
   
   // User endpoints
-  USER: {
-    PROFILE: '/users/me/',
-    EVENTS: '/users/me/events/',
-    WELLNESS: '/users/me/wellness-check/',
-  },
+  CURRENT_USER: `${API_BASE_URL}/users/me/`,
+  USER_EVENTS: `${API_BASE_URL}/users/events/`,
+  UPDATE_PROFILE: `${API_BASE_URL}/users/update-profile/`,
+  WELLNESS_CHECK: `${API_BASE_URL}/users/wellness-check/`,
   
-  // Planner endpoints
-  PLANNER: {
-    TASKS: '/planner/tasks/',
-    EVENTS: '/planner/events/',
-  },
+  // Resources endpoints
+  ACADEMIC_RESOURCES: `${API_BASE_URL}/resources/academic/`,
+  WELLNESS_RESOURCES: `${API_BASE_URL}/resources/wellness/`,
+  COMMUNITY_RESOURCES: `${API_BASE_URL}/resources/community/`,
+  RESOURCE_DOWNLOAD: (id: string) => `${API_BASE_URL}/resources/${id}/download/`,
 };
-
-export default API_CONFIG;
-
-// Helper function to create URL with path parameters
-export function createUrl(template: string, params: Record<string, string>) {
-  let url = template;
-  Object.keys(params).forEach(key => {
-    url = url.replace(`{${key}}`, params[key]);
-  });
-  return url;
-}

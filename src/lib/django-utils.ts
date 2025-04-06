@@ -1,83 +1,66 @@
 
+// Utility functions for working with Django data
+
 /**
- * Utility functions for working with Django backend responses
+ * Convert dates from Django format to JavaScript Date objects
  */
-
-// Converts Django-style snake_case to JavaScript camelCase
-export function toCamelCase(str: string): string {
-  return str.replace(/([-_][a-z])/g, (group) =>
-    group.toUpperCase().replace('-', '').replace('_', '')
-  );
+export function parseDjangoDate(dateString: string): Date {
+  return new Date(dateString);
 }
 
-// Recursively transforms objects with snake_case keys to camelCase
-export function transformKeysToCamelCase(obj: any): any {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map(transformKeysToCamelCase);
-  }
-
-  return Object.keys(obj).reduce((acc: any, key: string) => {
-    const camelKey = toCamelCase(key);
-    acc[camelKey] = transformKeysToCamelCase(obj[key]);
-    return acc;
-  }, {});
-}
-
-// Format date from Django backend (YYYY-MM-DD) to readable format
-export function formatDate(dateString: string): string {
-  const options: Intl.DateTimeFormatOptions = { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-}
-
-// Format time from Django backend (HH:MM:SS) to readable format
-export function formatTime(timeString: string): string {
-  const options: Intl.DateTimeFormatOptions = { 
-    hour: 'numeric', 
-    minute: 'numeric',
-    hour12: true
-  };
+/**
+ * Format data for sending to Django API
+ */
+export function formatForDjango(data: any): any {
+  // Make a copy to avoid modifying the original
+  const formattedData = { ...data };
   
-  // Create a dummy date and set the time
-  const date = new Date();
-  const [hours, minutes] = timeString.split(':').map(Number);
-  date.setHours(hours, minutes);
+  // Convert JavaScript Date objects to ISO strings for Django
+  Object.keys(formattedData).forEach(key => {
+    if (formattedData[key] instanceof Date) {
+      formattedData[key] = formattedData[key].toISOString();
+    }
+  });
   
-  return date.toLocaleTimeString(undefined, options);
+  return formattedData;
 }
 
-// Helper to handle Django pagination
-export function extractPaginationData(response: any) {
-  if (!response || !response.data) {
-    return {
-      results: [],
-      count: 0,
-      next: null,
-      previous: null
-    };
+/**
+ * Create form data for file uploads to Django
+ */
+export function createFormDataForDjango(data: any, files?: Record<string, File>): FormData {
+  const formData = new FormData();
+  
+  // Add regular data fields
+  Object.keys(data).forEach(key => {
+    if (data[key] !== undefined && data[key] !== null) {
+      // Convert objects/arrays to JSON strings
+      if (typeof data[key] === 'object' && !(data[key] instanceof Date) && !(data[key] instanceof File)) {
+        formData.append(key, JSON.stringify(data[key]));
+      } else if (data[key] instanceof Date) {
+        formData.append(key, data[key].toISOString());
+      } else {
+        formData.append(key, data[key].toString());
+      }
+    }
+  });
+  
+  // Add files
+  if (files) {
+    Object.keys(files).forEach(key => {
+      formData.append(key, files[key]);
+    });
   }
-
-  const { count, next, previous, results } = response.data;
-  return {
-    results: results ? transformKeysToCamelCase(results) : [],
-    count: count || 0,
-    next,
-    previous
-  };
+  
+  return formData;
 }
 
-// Format Django validation errors
-export function formatValidationErrors(error: any): Record<string, string> {
-  if (!error.response || !error.response.data) {
-    return { _error: 'An unknown error occurred' };
+/**
+ * Parse Django error responses
+ */
+export function parseDjangoErrors(error: any): Record<string, string[]> {
+  if (error.response && error.response.data) {
+    return error.response.data;
   }
-
-  return transformKeysToCamelCase(error.response.data);
+  return { non_field_errors: ['An unexpected error occurred'] };
 }
