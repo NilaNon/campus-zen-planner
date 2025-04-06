@@ -21,7 +21,7 @@ export function useSpaceCheckIn() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: studySpacesApi.checkInToSpace,
+    mutationFn: (spaceId: string) => studySpacesApi.checkInToSpace(spaceId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['studySpaces'] });
     },

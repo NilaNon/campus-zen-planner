@@ -11,21 +11,21 @@ const QuickActions = () => {
       title: 'Find Study Space',
       icon: MapPin,
       description: 'Find available quiet spaces on campus',
-      color: 'bg-zen-blue',
+      color: 'bg-blue-500',
       link: '/study-spaces'
     },
     {
       title: 'Join Study Group',
       icon: Users,
       description: 'Connect with peers for group study',
-      color: 'bg-zen-green',
+      color: 'bg-green-500',
       link: '/study-groups'
     },
     {
       title: 'Schedule Session',
       icon: CalendarPlus,
       description: 'Plan your study sessions',
-      color: 'bg-zen-purple',
+      color: 'bg-purple-500',
       link: '/planner'
     },
     {

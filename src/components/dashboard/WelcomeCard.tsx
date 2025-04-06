@@ -14,9 +14,9 @@ const WelcomeCard = () => {
   }
 
   return (
-    <Card className="bg-gradient-to-r from-zen-blue to-zen-purple text-white">
+    <Card className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
       <CardHeader>
-        <CardTitle className="text-2xl">{greeting}, Tshegofatso!</CardTitle>
+        <CardTitle className="text-2xl">{greeting}, Student!</CardTitle>
         <CardDescription className="text-white/80">Let's have a productive study session today</CardDescription>
       </CardHeader>
       <CardContent>
