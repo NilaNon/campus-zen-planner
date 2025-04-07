@@ -68,10 +68,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'campus_zen_planner.wsgi.application'
 
 # Database
+# Replace SQLite with MySQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'campus_zen_planner',
+        'USER': 'root',
+        'PASSWORD': '',  # Set your MySQL password here
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
