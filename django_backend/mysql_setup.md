@@ -1,11 +1,11 @@
 
 # Setting up MySQL for Campus Zen Planner
 
-This guide provides instructions for setting up MySQL for the Campus Zen Planner Django application.
+This guide provides step-by-step instructions for setting up MySQL for the Campus Zen Planner Django application.
 
 ## Prerequisites
 
-1. Install MySQL Server and MySQL Workbench
+1. Install MySQL Server and MySQL Workbench from the [MySQL website](https://dev.mysql.com/downloads/mysql/)
 2. Python with pip installed
 
 ## Setup Steps
@@ -17,17 +17,17 @@ This guide provides instructions for setting up MySQL for the Campus Zen Planner
    
    This package is already included in the requirements.txt file.
 
-2. **Create a MySQL database**:
+2. **Create a MySQL database using MySQL Workbench**:
    - Open MySQL Workbench
-   - Connect to your MySQL server
-   - Create a new schema (database):
+   - Connect to your MySQL server (create a connection if needed)
+   - Create a new schema (database) by clicking on the "Create a new schema" icon or running:
    ```sql
    CREATE DATABASE campus_zen_planner;
    ```
 
 3. **Configure Django**:
    - The settings.py file is already configured to use MySQL
-   - Update the database credentials in settings.py if needed:
+   - Update the database credentials in settings.py to match your MySQL setup:
    ```python
    DATABASES = {
        'default': {
@@ -41,21 +41,29 @@ This guide provides instructions for setting up MySQL for the Campus Zen Planner
    }
    ```
 
-4. **Run Migrations**:
+4. **Install Django requirements**:
+   ```bash
+   cd django_backend
+   pip install -r requirements.txt
+   ```
+
+5. **Run Migrations**:
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-5. **Create a Superuser**:
+6. **Create a Superuser** (for admin access):
    ```bash
    python manage.py createsuperuser
    ```
 
-6. **Start the Django Server**:
+7. **Start the Django Server**:
    ```bash
    python manage.py runserver
    ```
+   
+   Access the admin panel at: http://127.0.0.1:8000/admin/
 
 ## Troubleshooting
 

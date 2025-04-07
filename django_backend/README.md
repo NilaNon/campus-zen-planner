@@ -1,129 +1,72 @@
 
-# Django Backend for Campus Zen Planner
+# Campus Zen Planner - Django Backend
 
-This folder contains the Django backend for the Campus Zen Planner application.
+This is the Django backend for the Campus Zen Planner application. It's designed to work with MySQL as the database.
 
-## Setup Instructions
+## Getting Started
 
-1. **Create a virtual environment:**
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-```
+1. **Set up the MySQL database**:
+   - Follow the instructions in `mysql_setup.md`
 
-2. **Install Django and required packages:**
-```bash
-pip install django djangorestframework django-cors-headers
-```
+2. **Install requirements**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3. **Create a new Django project:**
-```bash
-django-admin startproject campus_zen_planner .
-```
+3. **Run migrations**:
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
 
-4. **Create apps for different features:**
-```bash
-python manage.py startapp accounts
-python manage.py startapp study_spaces
-python manage.py startapp study_groups
-python manage.py startapp resources
-python manage.py startapp planner
-```
+4. **Create a superuser** (for admin access):
+   ```bash
+   python manage.py createsuperuser
+   ```
 
-5. **Configure settings.py:**
-```python
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders',
-    'accounts',
-    'study_spaces',
-    'study_groups',
-    'resources',
-    'planner',
-]
+5. **Start the development server**:
+   ```bash
+   python manage.py runserver
+   ```
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Add this line
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+6. **Access the admin panel**:
+   - Go to http://127.0.0.1:8000/admin/
+   - Log in with the superuser credentials you created
 
-# CORS settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-]
+## Main Features
 
-# REST Framework settings
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-}
-```
-
-6. **Create models:**
-Each app should contain models for its respective domain.
-
-7. **Create API views and serializers:**
-Implement REST API endpoints using Django REST Framework.
-
-8. **Set up URLs:**
-Configure URL patterns for each app.
-
-9. **Run migrations:**
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-10. **Create a superuser:**
-```bash
-python manage.py createsuperuser
-```
-
-11. **Run the development server:**
-```bash
-python manage.py runserver
-```
+- **User Authentication**: Sign up, login, and user profile management
+- **Study Spaces**: Find and check in to available study spaces on campus
+- **Study Groups**: Create and join study groups with peers
+- **Resource Sharing**: Access and share academic resources
+- **Planner**: Schedule and manage your study sessions
 
 ## API Endpoints
 
-### Authentication
-- `POST /api/auth/register/` - Register a new user
-- `POST /api/auth/login/` - Log in a user
-- `POST /api/auth/logout/` - Log out a user
+The main API endpoints include:
 
-### Study Spaces
-- `GET /api/study-spaces/` - List all study spaces
-- `GET /api/study-spaces/<id>/` - Get a specific study space
-- `POST /api/study-spaces/` - Create a new study space (auth required)
+- `/api/auth/`: Authentication endpoints (register, login, logout)
+- `/api/study-spaces/`: Study space listing and management
+- `/api/study-groups/`: Study group creation and management
+- `/api/resources/`: Academic resource sharing
+- `/api/events/`: Calendar and event planning
 
-### Study Groups
-- `GET /api/study-groups/` - List all study groups
-- `GET /api/study-groups/<id>/` - Get a specific study group
-- `POST /api/study-groups/` - Create a new study group (auth required)
-- `POST /api/study-groups/<id>/join/` - Join a study group (auth required)
+## Populating Sample Data
 
-### Resources
-- `GET /api/resources/` - List all resources
-- `GET /api/resources/<id>/` - Get a specific resource
-- `POST /api/resources/` - Add a new resource (auth required)
+To add some initial study spaces, you can:
 
-### Planner
-- `GET /api/events/` - List all events for the current user (auth required)
-- `POST /api/events/` - Create a new event (auth required)
-- `PUT /api/events/<id>/` - Update an event (auth required)
-- `DELETE /api/events/<id>/` - Delete an event (auth required)
+1. Log in to the admin panel
+2. Go to the Study Spaces section
+3. Add new study spaces with their details
+
+Or, you can use the following management command (after creating it):
+
+```bash
+python manage.py populate_study_spaces
+```
+
+## Running Tests
+
+```bash
+python manage.py test
+```
