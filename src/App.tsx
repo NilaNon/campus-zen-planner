@@ -10,6 +10,8 @@ import StudyGroups from "./pages/StudyGroups";
 import Planner from "./pages/Planner";
 import Resources from "./pages/Resources";
 import Settings from "./pages/Settings";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/layout/Layout";
 
@@ -23,6 +25,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route path="/study-spaces" element={
             <Layout>
               <StudySpaces />
