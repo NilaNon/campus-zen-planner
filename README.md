@@ -20,7 +20,7 @@ To run this project locally:
 
 ```sh
 # Clone the repository
-git clone <YOUR_GIT_URL>
+git clone https://github.com/NilaNon/campus-zen-planner.git
 
 # Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
