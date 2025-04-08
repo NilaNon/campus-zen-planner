@@ -93,7 +93,10 @@ export const fetchStudyGroups = async () => {
     headers['Authorization'] = `Bearer ${token}`;
   }
   
-  const response = await fetch(`${API_BASE_URL}/study-groups/`);
+  const response = await fetch(`${API_BASE_URL}/study-groups/`, {
+    headers,
+  });
+  
   if (!response.ok) {
     throw new Error('Failed to fetch study groups');
   }
@@ -111,7 +114,10 @@ export const fetchResources = async () => {
     headers['Authorization'] = `Bearer ${token}`;
   }
   
-  const response = await fetch(`${API_BASE_URL}/resources/`);
+  const response = await fetch(`${API_BASE_URL}/resources/`, {
+    headers,
+  });
+  
   if (!response.ok) {
     throw new Error('Failed to fetch resources');
   }
@@ -129,7 +135,10 @@ export const fetchEvents = async () => {
     headers['Authorization'] = `Bearer ${token}`;
   }
   
-  const response = await fetch(`${API_BASE_URL}/events/`);
+  const response = await fetch(`${API_BASE_URL}/events/`, {
+    headers,
+  });
+  
   if (!response.ok) {
     throw new Error('Failed to fetch events');
   }
