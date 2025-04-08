@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '@/services/api';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -13,25 +14,25 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // This is a placeholder for the actual registration
-      // You'll need to implement this once your Django backend is ready
-      console.log('Sign up with:', name, email, password);
+      // Call the registration API
+      await authApi.register({ name, email, password });
+      
       toast({
         title: "Account created!",
-        description: "Your account has been created. This is a placeholder - implement with Django backend.",
+        description: "Your account has been created. You can now sign in.",
       });
       
-      // Simulate success for now
-      setTimeout(() => {
-        window.location.href = '/sign-in';
-      }, 1500);
+      // Navigate to sign in page
+      navigate('/sign-in');
     } catch (error) {
+      console.error("Registration error:", error);
       toast({
         title: "Error creating account",
         description: "Please check your information and try again.",

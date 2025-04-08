@@ -5,32 +5,38 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '@/services/api';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // This is a placeholder for the actual authentication
-      // You'll need to implement this once your Django backend is ready
-      console.log('Sign in with:', email, password);
+      // Call the authentication API
+      const response = await authApi.login(email, password);
+      
+      // Store the token in localStorage
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+      }
+      
       toast({
         title: "Success!",
-        description: "Signed in successfully. This is a placeholder - implement with Django backend.",
+        description: "Signed in successfully.",
       });
       
-      // Simulate success for now
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1500);
+      // Navigate to dashboard
+      navigate('/');
     } catch (error) {
+      console.error("Login error:", error);
       toast({
         title: "Error signing in",
         description: "Please check your credentials and try again.",

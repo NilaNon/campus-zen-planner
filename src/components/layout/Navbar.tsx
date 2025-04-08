@@ -12,15 +12,39 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '@/services/api';
+import { useToast } from '@/hooks/use-toast';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  // In a real app, you would have auth state here
-  const isLoggedIn = false;
+  const { toast } = useToast();
+  
+  // Check if the user is logged in by looking for a token
+  const isLoggedIn = Boolean(localStorage.getItem('token'));
 
-  const handleLogout = () => {
-    // Call your logout function here
-    navigate('/sign-in');
+  const handleLogout = async () => {
+    try {
+      // Call the logout API
+      await authApi.logout();
+      
+      // Remove the token from localStorage
+      localStorage.removeItem('token');
+      
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
+      
+      // Navigate to sign in page
+      navigate('/sign-in');
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: "Error logging out",
+        description: "An error occurred while logging out.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -48,8 +72,12 @@ const Navbar = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/settings">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/settings">Settings</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

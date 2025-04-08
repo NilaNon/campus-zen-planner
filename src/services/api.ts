@@ -2,7 +2,8 @@
 // API service for the Campus Zen Planner
 
 // Base URL for Django backend
-const API_BASE_URL = 'http://localhost:8000/api';
+// Make sure to update this to match your Django server URL
+const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
 // Auth endpoints
 export const authApi = {
@@ -13,6 +14,7 @@ export const authApi = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
+      credentials: 'include',
     });
     
     if (!response.ok) {
@@ -39,34 +41,58 @@ export const authApi = {
   },
   
   logout: async () => {
+    const token = localStorage.getItem('token');
+    
     const response = await fetch(`${API_BASE_URL}/auth/logout/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Authorization': token ? `Bearer ${token}` : '',
       },
+      credentials: 'include',
     });
     
     if (!response.ok) {
       throw new Error('Logout failed');
     }
     
-    localStorage.removeItem('token');
     return true;
   }
 };
 
 // Fetch study spaces
 export const fetchStudySpaces = async () => {
-  const response = await fetch(`${API_BASE_URL}/study-spaces/`);
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  const response = await fetch(`${API_BASE_URL}/study-spaces/`, {
+    headers,
+  });
+  
   if (!response.ok) {
     throw new Error('Failed to fetch study spaces');
   }
+  
   return response.json();
 };
 
 // Fetch study groups
 export const fetchStudyGroups = async () => {
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
   const response = await fetch(`${API_BASE_URL}/study-groups/`);
   if (!response.ok) {
     throw new Error('Failed to fetch study groups');
@@ -76,6 +102,15 @@ export const fetchStudyGroups = async () => {
 
 // Fetch resources
 export const fetchResources = async () => {
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
   const response = await fetch(`${API_BASE_URL}/resources/`);
   if (!response.ok) {
     throw new Error('Failed to fetch resources');
@@ -85,6 +120,15 @@ export const fetchResources = async () => {
 
 // Fetch events for planner
 export const fetchEvents = async () => {
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
   const response = await fetch(`${API_BASE_URL}/events/`);
   if (!response.ok) {
     throw new Error('Failed to fetch events');
