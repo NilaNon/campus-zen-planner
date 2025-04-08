@@ -1,73 +1,60 @@
-# Welcome to your Lovable project
+# Campus Zen Planner - Campus Study Space Finder
 
-## Project info
+Campus Zen Planner is a web application designed to help students at Sol Plaatje University find and book appropriate study spaces on campus, coordinate study groups, and manage their academic schedules.
 
-**URL**: https://lovable.dev/projects/ba3dd1fb-b870-4b1a-a93e-ed43701d164e
+## Project Overview
 
-## How can I edit this code?
+This application addresses the challenges faced by students in finding quiet and focused study environments, especially those living in shared accommodation. StudyHub provides a comprehensive solution for locating available study spaces and planning effective study sessions.
 
-There are several ways of editing your application.
+## Core Features
 
-**Use Lovable**
+- **Study Space Finder**: Locate available study spaces on campus with details about noise levels, amenities, and current availability
+- **Study Planner**: Schedule and manage study sessions, track academic deadlines, and optimize study time
+- **Group Coordination**: Create and join study groups, find suitable meeting spaces
+- **Resource Access**: Find and share academic resources
+- **Wellness Integration**: Manage study breaks and maintain academic-life balance
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ba3dd1fb-b870-4b1a-a93e-ed43701d164e) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+To run this project locally:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## Technology Stack
 
 This project is built with:
 
 - Vite
 - TypeScript
 - React
-- shadcn-ui
+- shadcn-ui components
 - Tailwind CSS
 
-## How can I deploy this project?
+## User-Centered Design Approach
 
-Simply open [Lovable](https://lovable.dev/projects/ba3dd1fb-b870-4b1a-a93e-ed43701d164e) and click on Share -> Publish.
+StudyHub was developed using a user-centered design approach:
 
-## Can I connect a custom domain to my Lovable project?
+1. **User Research**: Conducted interviews with students to understand their challenges with finding appropriate study environments
+2. **Persona Development**: Created user personas (e.g., independent learners and collaborative studiers)
+3. **Conceptual Modeling**: Designed an interface based on a "Digital Campus Concierge" metaphor
+4. **Iterative Design**: Continuously refined wireframes based on user feedback
 
-Yes it is!
+## Contributing
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Contributions to improve Campus Zen Planner are welcome! Please feel free to submit pull requests or open issues to suggest enhancements.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Deployment
+
+This project can be deployed using the built-in Lovable publishing feature. Navigate to your Lovable project and click on Share -> Publish.
