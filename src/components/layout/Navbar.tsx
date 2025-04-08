@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bell, User, SidebarClose } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -18,9 +18,13 @@ import { useToast } from '@/hooks/use-toast';
 const Navbar = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
-  // Check if the user is logged in by looking for a token
-  const isLoggedIn = Boolean(localStorage.getItem('token'));
+  // Check if the user is logged in when component mounts
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(Boolean(token));
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -29,6 +33,7 @@ const Navbar = () => {
       
       // Remove the token from localStorage
       localStorage.removeItem('token');
+      setIsLoggedIn(false);
       
       toast({
         title: "Logged out",

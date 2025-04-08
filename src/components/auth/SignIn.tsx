@@ -26,15 +26,17 @@ const SignIn = () => {
       // Store the token in localStorage
       if (response.token) {
         localStorage.setItem('token', response.token);
+        
+        toast({
+          title: "Success!",
+          description: "Signed in successfully.",
+        });
+        
+        // Force page reload to update authentication state
+        window.location.href = '/';
+      } else {
+        throw new Error('No token received');
       }
-      
-      toast({
-        title: "Success!",
-        description: "Signed in successfully.",
-      });
-      
-      // Navigate to dashboard
-      navigate('/');
     } catch (error) {
       console.error("Login error:", error);
       toast({

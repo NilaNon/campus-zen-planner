@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   ToggleGroup, 
@@ -18,8 +17,10 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Search, MapPin, Users, Clock, Check } from 'lucide-react';
 import StudySpaceCard from '@/components/dashboard/StudySpaceCard';
+import { useToast } from '@/hooks/use-toast';
+import { fetchStudySpaces } from '@/services/api';
 
-const spaces = [
+const fallbackSpaces = [
   {
     id: 1,
     name: 'Library Quiet Zone',
@@ -94,22 +95,41 @@ const StudySpaces = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [building, setBuilding] = useState<string>("");
   const [capacity, setCapacity] = useState<number[]>([1]);
+  const [spaces, setSpaces] = useState(fallbackSpaces);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const getStudySpaces = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchStudySpaces();
+        if (data && Array.isArray(data) && data.length > 0) {
+          setSpaces(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch study spaces:', err);
+        setError("Could not load study spaces from server. Showing sample data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getStudySpaces();
+  }, []);
 
   const filteredSpaces = spaces.filter(space => {
-    // Filter by availability
     if (availableOnly && !space.available) return false;
     
-    // Filter by type
     if (spaceType !== "all" && space.type !== spaceType) return false;
     
-    // Filter by search term
     if (searchTerm && !space.name.toLowerCase().includes(searchTerm.toLowerCase()) && 
         !space.location.toLowerCase().includes(searchTerm.toLowerCase())) return false;
     
-    // Filter by building
     if (building && !space.location.includes(building)) return false;
     
-    // Filter by capacity
     if (capacity[0] > space.capacity) return false;
     
     return true;
@@ -118,6 +138,12 @@ const StudySpaces = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Find Study Spaces</h1>
+      
+      {error && (
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded">
+          {error}
+        </div>
+      )}
       
       <Card>
         <CardHeader>
@@ -191,16 +217,34 @@ const StudySpaces = () => {
       
       <div>
         <h2 className="text-xl font-semibold mb-4">Results ({filteredSpaces.length})</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredSpaces.map((space) => (
-            <StudySpaceCard key={space.id} {...space} />
-          ))}
-          {filteredSpaces.length === 0 && (
-            <div className="col-span-full py-10 text-center text-muted-foreground">
-              No study spaces match your filters. Try adjusting your search criteria.
-            </div>
-          )}
-        </div>
+        
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3].map((_, i) => (
+              <Card key={i} className="h-64">
+                <div className="animate-pulse flex flex-col h-full">
+                  <div className="h-32 bg-slate-200"></div>
+                  <div className="p-4 space-y-2">
+                    <div className="h-4 bg-slate-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-slate-200 rounded w-2/3"></div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredSpaces.map((space) => (
+              <StudySpaceCard key={space.id} {...space} />
+            ))}
+            {filteredSpaces.length === 0 && (
+              <div className="col-span-full py-10 text-center text-muted-foreground">
+                No study spaces match your filters. Try adjusting your search criteria.
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
