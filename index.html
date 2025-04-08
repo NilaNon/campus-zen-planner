@@ -1,16 +1,29 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Zen Planner</title>
-    <meta name="description" content="Campus Zen Planner - Plan your campus life efficiently" />
+    <meta name="description" content="Campus Zen Planner - Find perfect study spaces and plan your campus life efficiently" />
     <meta name="author" content="Campus Zen Team" />
 
+    <!-- Open Graph tags for better social sharing -->
     <meta property="og:title" content="Campus Zen Planner" />
-    <meta property="og:description" content="Campus Zen Planner - Plan your campus life efficiently" />
+    <meta property="og:description" content="Find perfect study spaces and plan your campus life efficiently" />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- Theme support -->
+    <script>
+      // Check for user's theme preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
   </head>
 
   <body>

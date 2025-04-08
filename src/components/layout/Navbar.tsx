@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Bell, User, SidebarClose } from 'lucide-react';
+import { Bell, User, SidebarClose, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
@@ -19,12 +19,27 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   
   // Check if the user is logged in when component mounts
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(Boolean(token));
+    
+    // Get initial theme preference
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    }
   }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
 
   const handleLogout = async () => {
     try {
@@ -58,10 +73,19 @@ const Navbar = () => {
         <SidebarTrigger className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-muted">
           <SidebarClose className="h-5 w-5" />
         </SidebarTrigger>
-        <h1 className="text-lg font-semibold">Campus Zen Planner</h1>
+        <h1 className="text-lg font-semibold bg-gradient-to-r from-zen-blue to-zen-purple bg-clip-text text-transparent">Campus Zen Planner</h1>
       </div>
       
       <div className="flex items-center gap-3">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={toggleTheme} 
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        >
+          {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+        </Button>
+        
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-zen-purple text-white text-xs flex items-center justify-center">3</span>
