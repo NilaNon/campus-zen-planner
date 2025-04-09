@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'study_groups',
     'resources',
     'planner',
+    'wireframe',  # Add the wireframe app
 ]
 
 MIDDLEWARE = [

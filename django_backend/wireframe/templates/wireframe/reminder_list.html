@@ -1,0 +1,28 @@
+
+{% extends 'wireframe/base.html' %}
+
+{% block title %}Study Reminders - Campus Zen Planner{% endblock %}
+
+{% block content %}
+<h2>Your Study Reminders</h2>
+
+<a href="{% url 'wireframe:create_reminder' %}" class="btn">Create New Reminder</a>
+
+<div style="margin-top: 1rem;">
+    {% if reminders %}
+        {% for reminder in reminders %}
+            <div class="card">
+                <h3>{{ reminder.title }}</h3>
+                <p>{{ reminder.description }}</p>
+                <p><strong>Due:</strong> {{ reminder.due_date }}</p>
+                <p><strong>Status:</strong> {% if reminder.is_completed %}Completed{% else %}Pending{% endif %}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card">
+            <p>You don't have any study reminders yet.</p>
+            <a href="{% url 'wireframe:create_reminder' %}" class="btn">Create your first reminder</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

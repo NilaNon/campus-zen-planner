@@ -1,0 +1,42 @@
+
+{% extends 'wireframe/base.html' %}
+
+{% block title %}Home - Campus Zen Planner{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome to Campus Zen Planner</h2>
+    <p>This is a wireframe demonstration of the Campus Zen Planner application.</p>
+    <p>The Campus Zen Planner helps students find study spaces, create study groups, and manage their academic schedule.</p>
+</div>
+
+<div class="card">
+    <h3>Key Features:</h3>
+    <ul>
+        <li>Find available study spaces on campus</li>
+        <li>Join or create study groups</li>
+        <li>Manage your academic schedule</li>
+        <li>Set study reminders</li>
+    </ul>
+    <a href="{% url 'wireframe:create_reminder' %}" class="btn">Create a Study Reminder</a>
+</div>
+
+<div class="card">
+    <h3>Popular Study Spaces</h3>
+    <p>This section would show available study spaces from the database.</p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 5px; width: 200px;">
+            <h4>Library - 2nd Floor</h4>
+            <p>Current Occupancy: 15/30</p>
+            <p>Type: Quiet Space</p>
+            <button class="btn">Check In</button>
+        </div>
+        <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 5px; width: 200px;">
+            <h4>Computer Lab</h4>
+            <p>Current Occupancy: 8/20</p>
+            <p>Type: Group Space</p>
+            <button class="btn">Check In</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -12,8 +12,10 @@ urlpatterns = [
     path('api/', include('study_groups.urls')),
     path('api/', include('resources.urls')),
     path('api/', include('planner.urls')),
-    # Add a redirect from root URL to admin
-    path('', RedirectView.as_view(url='/admin/', permanent=False)),
+    # Add wireframe app URL patterns
+    path('wireframe/', include('wireframe.urls')),
+    # Add a redirect from root URL to wireframe homepage
+    path('', RedirectView.as_view(url='/wireframe/', permanent=False)),
 ]
 
 if settings.DEBUG:
