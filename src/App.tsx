@@ -14,6 +14,8 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/layout/Layout";
+import StudyGroupsDiagram from "./pages/StudyGroupsDiagram";
+import PlannerDiagram from "./pages/PlannerDiagram";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +52,16 @@ const App = () => (
           <Route path="/settings" element={
             <Layout>
               <Settings />
+            </Layout>
+          } />
+          <Route path="/study-groups-diagram" element={
+            <Layout>
+              <StudyGroupsDiagram />
+            </Layout>
+          } />
+          <Route path="/planner-diagram" element={
+            <Layout>
+              <PlannerDiagram />
             </Layout>
           } />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

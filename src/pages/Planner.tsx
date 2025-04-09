@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar as CalendarIcon, Clock, BookOpen, Edit, MapPin, AlertTriangle, Plus, X } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, BookOpen, Edit, MapPin, AlertTriangle, Plus, X, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Badge } from '@/components/ui/badge';
