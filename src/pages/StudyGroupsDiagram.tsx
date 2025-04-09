@@ -72,22 +72,27 @@ const StudyGroupsDiagram = () => {
           <div className="space-y-4">
             <div className="border-l-4 border-blue-600 pl-4 py-2">
               <p className="font-semibold text-blue-600">Visibility:</p>
-              <p>Clear separation between "My Groups" and "Find Groups" sections with visual highlighting of active tab. Color-coded badges clearly indicate "Joined" vs "Open" status.</p>
+              <p>All relevant information about study groups is clearly presented on each card, making it easy to scan and compare options.</p>
             </div>
             
             <div className="border-l-4 border-green-600 pl-4 py-2">
               <p className="font-semibold text-green-600">Feedback:</p>
-              <p>Buttons change appearance on hover and provide visual confirmation. Action confirmation appears as temporary toast messages.</p>
+              <p>The "Joined" and "Open" badges provide immediate feedback on which groups the user belongs to and which they can join.</p>
             </div>
             
             <div className="border-l-4 border-purple-600 pl-4 py-2">
               <p className="font-semibold text-purple-600">Consistency:</p>
-              <p>All group cards follow identical layout pattern for recognition. Consistent icons used for meeting time, location, and members.</p>
+              <p>All group cards follow identical layout patterns and use consistent icons for meeting time, location, and members.</p>
             </div>
             
             <div className="border-l-4 border-orange-600 pl-4 py-2">
               <p className="font-semibold text-orange-600">Constraints:</p>
-              <p>Group creation requires explicit confirmation, preventing accidental actions. Users can only view one section at a time, focusing attention.</p>
+              <p>The tab structure constrains interactions by showing only "My Groups" or "Find Groups" at one time, focusing the user's attention.</p>
+            </div>
+
+            <div className="border-l-4 border-indigo-600 pl-4 py-2">
+              <p className="font-semibold text-indigo-600">Affordance:</p>
+              <p>The "Message Group" and "Request to Join" buttons clearly indicate the possible actions users can take with each group.</p>
             </div>
           </div>
         </CardContent>
