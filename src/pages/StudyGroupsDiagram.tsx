@@ -66,80 +66,28 @@ const StudyGroupsDiagram = () => {
       {/* Design principles */}
       <Card>
         <CardHeader>
-          <CardTitle>Applied Design Principles</CardTitle>
+          <CardTitle>Annotations</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-blue-600 mb-2">Visibility</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Tab Navigation</span>
-                  <div className="text-sm">
-                    Clear separation between "My Groups" and "Find Groups" sections with visual highlighting of active tab
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Status Badges</span>
-                  <div className="text-sm">
-                    Color-coded badges clearly indicate "Joined" vs "Open" status
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-4">
+            <div className="border-l-4 border-blue-600 pl-4 py-2">
+              <p className="font-semibold text-blue-600">Visibility:</p>
+              <p>Clear separation between "My Groups" and "Find Groups" sections with visual highlighting of active tab. Color-coded badges clearly indicate "Joined" vs "Open" status.</p>
             </div>
             
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-green-600 mb-2">Feedback</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Interactive Elements</span>
-                  <div className="text-sm">
-                    Buttons change appearance on hover and provide visual confirmation
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Toast Notifications</span>
-                  <div className="text-sm">
-                    Action confirmation appears as temporary toast messages
-                  </div>
-                </div>
-              </div>
+            <div className="border-l-4 border-green-600 pl-4 py-2">
+              <p className="font-semibold text-green-600">Feedback:</p>
+              <p>Buttons change appearance on hover and provide visual confirmation. Action confirmation appears as temporary toast messages.</p>
             </div>
             
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-purple-600 mb-2">Consistency</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Card Layout</span>
-                  <div className="text-sm">
-                    All group cards follow identical layout pattern for recognition
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Iconography</span>
-                  <div className="text-sm">
-                    Consistent icons used for meeting time, location, members
-                  </div>
-                </div>
-              </div>
+            <div className="border-l-4 border-purple-600 pl-4 py-2">
+              <p className="font-semibold text-purple-600">Consistency:</p>
+              <p>All group cards follow identical layout pattern for recognition. Consistent icons used for meeting time, location, and members.</p>
             </div>
             
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-orange-600 mb-2">Constraints</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Dialog Confirmation</span>
-                  <div className="text-sm">
-                    Group creation requires explicit confirmation, preventing accidental actions
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Tab Interface</span>
-                  <div className="text-sm">
-                    Users can only view one section at a time, focusing attention
-                  </div>
-                </div>
-              </div>
+            <div className="border-l-4 border-orange-600 pl-4 py-2">
+              <p className="font-semibold text-orange-600">Constraints:</p>
+              <p>Group creation requires explicit confirmation, preventing accidental actions. Users can only view one section at a time, focusing attention.</p>
             </div>
           </div>
         </CardContent>

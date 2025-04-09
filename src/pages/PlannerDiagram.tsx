@@ -136,80 +136,28 @@ const PlannerDiagram = () => {
       {/* Design principles */}
       <Card>
         <CardHeader>
-          <CardTitle>Applied Design Principles</CardTitle>
+          <CardTitle>Annotations</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-blue-600 mb-2">Visibility</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Calendar Highlighting</span>
-                  <div className="text-sm">
-                    Dates with events are clearly highlighted, and today's date is distinctly marked
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Event Cards</span>
-                  <div className="text-sm">
-                    All key information (time, location, description) is immediately visible
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-4">
+            <div className="border-l-4 border-blue-600 pl-4 py-2">
+              <p className="font-semibold text-blue-600">Visibility:</p>
+              <p>Dates with events are clearly highlighted, and today's date is distinctly marked. All key information (time, location, description) is immediately visible on event cards.</p>
             </div>
             
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-green-600 mb-2">Feedback</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Selected Date</span>
-                  <div className="text-sm">
-                    The currently selected date is clearly highlighted in the calendar
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Event Type Badges</span>
-                  <div className="text-sm">
-                    Color-coded badges provide immediate feedback on event type
-                  </div>
-                </div>
-              </div>
+            <div className="border-l-4 border-green-600 pl-4 py-2">
+              <p className="font-semibold text-green-600">Feedback:</p>
+              <p>The currently selected date is clearly highlighted in the calendar. Color-coded badges provide immediate feedback on event type.</p>
             </div>
             
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-orange-600 mb-2">Affordance</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Clickable Calendar</span>
-                  <div className="text-sm">
-                    Calendar dates are visually designed to appear clickable
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Add Button</span>
-                  <div className="text-sm">
-                    Prominently placed button suggests ability to add new events
-                  </div>
-                </div>
-              </div>
+            <div className="border-l-4 border-orange-600 pl-4 py-2">
+              <p className="font-semibold text-orange-600">Affordance:</p>
+              <p>Calendar dates are visually designed to appear clickable. The prominently placed "Add" button suggests the ability to add new events.</p>
             </div>
             
-            <div className="border rounded-lg p-4">
-              <h3 className="font-bold text-purple-600 mb-2">Consistency</h3>
-              <div className="flex gap-4">
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Event Layout</span>
-                  <div className="text-sm">
-                    All event cards follow identical layout pattern for recognition
-                  </div>
-                </div>
-                <div className="flex-1 border rounded p-3 bg-gray-50">
-                  <span className="block font-semibold mb-1">Color Coding</span>
-                  <div className="text-sm">
-                    Consistent color scheme used throughout (purple for highlights)
-                  </div>
-                </div>
-              </div>
+            <div className="border-l-4 border-purple-600 pl-4 py-2">
+              <p className="font-semibold text-purple-600">Consistency:</p>
+              <p>All event cards follow identical layout pattern for recognition. A consistent color scheme is used throughout (purple for highlights).</p>
             </div>
           </div>
         </CardContent>
